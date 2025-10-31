@@ -4,3 +4,4 @@ build/
 CMakeFiles/
 vcpkg-configuration.json
 vcpkg_installed/
+/.cache
