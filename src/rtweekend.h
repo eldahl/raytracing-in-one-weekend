@@ -1,3 +1,4 @@
+#pragma once
 #ifndef RTWEEKEND_H
 #define RTWEEKEND_H
 
@@ -8,7 +9,6 @@
 #include <memory>
 
 // C++ Std Usings
-
 using std::make_shared;
 using std::shared_ptr;
 
@@ -36,10 +36,9 @@ inline double random_double(double min, double max) {
 }
 
 // Common Headers
-
+#include "vec3.h"
 #include "color.h"
 #include "interval.h"
 #include "ray.h"
-#include "vec3.h"
 
 #endif
