@@ -2,9 +2,9 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
+#include "hittable.h"
 #include "rtweekend.h"
 #include "vec3.h"
-#include "hittable.h"
 
 class material {
 public:
@@ -39,12 +39,13 @@ private:
 
 class metal : public material {
 public:
-  metal(const color &albedo, double fuzz) : albedo(albedo), fuzz(fuzz < 1 ? fuzz : 1) {}
+  metal(const color &albedo, double fuzz)
+      : albedo(albedo), fuzz(fuzz < 1 ? fuzz : 1) {}
 
   bool scatter(const ray &r_in, const hit_record &rec, color &attenuation,
                ray &scattered) const override {
     vec3 reflected = reflect(r_in.direction(), rec.normal);
-		reflected = unit_vector(reflected) + (fuzz * random_unit_vector());
+    reflected = unit_vector(reflected) + (fuzz * random_unit_vector());
     scattered = ray(rec.p, reflected);
     attenuation = albedo;
     return (dot(scattered.direction(), rec.normal) > 0);
@@ -52,7 +53,38 @@ public:
 
 private:
   color albedo;
-	double fuzz;
+  double fuzz;
+};
+
+class dielectric : public material {
+public:
+  dielectric(double refraction_index) : refraction_index(refraction_index) {}
+
+  bool scatter(const ray &r_in, const hit_record &rec, color &attenuation,
+               ray &scattered) const override {
+    attenuation = color(1.0, 1.0, 1.0);
+    double ri = rec.front_face ? (1.0 / refraction_index) : refraction_index;
+
+    vec3 unit_direction = unit_vector(r_in.direction());
+    double cos_theta = std::fmin(dot(-unit_direction, rec.normal), 1.0);
+    double sin_theta = std::sqrt(1.0 - cos_theta * cos_theta);
+
+    bool cannot_refract = ri * sin_theta > 1.0;
+    vec3 direction;
+
+    if (cannot_refract)
+      direction = reflect(unit_direction, rec.normal);
+    else
+      direction = refract(unit_direction, rec.normal, ri);
+
+    scattered = ray(rec.p, direction);
+    return true;
+  }
+
+private:
+  // Refractive index in vacuum or air, or the ratio of the material's
+  // refractive index over the refractive index of the enclosing media
+  double refraction_index;
 };
 
 #endif
