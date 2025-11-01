@@ -33,8 +33,7 @@ The first image is from halfway through.
 <p align="center"><img src="./imgs/12.png"width="100%"/></p>
 <p align="center">Simulated depth of field through a lens.</p>
 <p align="center"><img src="./imgs/final.png" width="100%"/></p>
-<p align="center":w
->Rerendered cover image of the book.</p>
+<p align="center">Rerendered cover image of the book.</p>
 
 # Credits | The book
 [_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
