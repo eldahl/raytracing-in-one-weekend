@@ -1,4 +1,4 @@
-<p align="center" ><img src="./imgs/final-final.png" width="100%"/></p>
+<p align="center" ><img src="./imgs/final-3.png" width="100%"/></p>
 
 # Ray Tracing in One Weekend | The Book
 On the 31st of October 2025 or on Halloween, with nothing to do, my sights were set on going through the "Ray Tracing in One Weekend" book:     
