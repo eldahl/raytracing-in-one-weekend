@@ -10,7 +10,7 @@
 int main() {
   hittable_list world;
 
-  auto ground_material = make_shared<lambertian>(color(0.5, 0.5, 0.5));
+  auto ground_material = make_shared<lambertian>(color(0.8, 0.5, 0.6));
   world.add(make_shared<sphere>(point3(0, -1000, 0), 1000, ground_material));
 
   for (int a = -11; a < 11; a++) {
@@ -44,22 +44,22 @@ int main() {
   auto material1 = make_shared<dielectric>(1.5);
   world.add(make_shared<sphere>(point3(0, 1, 0), 1.0, material1));
 
-  auto material2 = make_shared<lambertian>(color(0.4, 0.2, 0.1));
-  world.add(make_shared<sphere>(point3(-4, 1, 0), 1.0, material2));
+  auto material2 = make_shared<lambertian>(color(0.8, 0.4, 0.8));
+  world.add(make_shared<sphere>(point3(0, 5, 0), 1.0, material2));
 
-  auto material3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.0);
-  world.add(make_shared<sphere>(point3(4, 1, 0), 1.0, material3));
+  auto material3 = make_shared<metal>(color(0.137, 0.922, 0.439), 0.2);
+  world.add(make_shared<sphere>(point3(0, 3, 0), 1.0, material3));
 
   camera cam;
 
   cam.aspect_ratio = 16.0 / 9.0;
   cam.image_width = 1200;
-  cam.samples_per_pixel = 500;
+  cam.samples_per_pixel = 10;
   cam.max_depth = 50;
 
-  cam.vfov = 20;
+  cam.vfov = 50;
   cam.lookfrom = point3(13, 2, 3);
-  cam.lookat = point3(0, 0, 0);
+  cam.lookat = point3(0, 2.5, 0);
   cam.vup = vec3(0, 1, 0);
 
   cam.defocus_angle = 0.6;
