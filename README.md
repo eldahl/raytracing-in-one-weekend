@@ -4,10 +4,13 @@
 On the 31st of October 2025 or on Halloween, with nothing to do, my sights were set on going through the "Ray Tracing in One Weekend" book:     
 [_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
 
+## Deviations from the book:
+- Lambertian-texture material has been added. Requires UV to be set by the geometry class.
+
+# Generated images:
 Below are the generated images that follows the book.    
 The first image is from halfway through.
 
-# Generated images:
 <p align="center" ><img src="./imgs/1.png" width="100%"/></p>
 <p align="center">Lambertian diffuse material.</p>
 <p align="center"><img src="./imgs/2.png" width="100%"/></p>
