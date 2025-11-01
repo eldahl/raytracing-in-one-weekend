@@ -18,6 +18,9 @@ public:
   double t;
   bool front_face;
 
+  double u;
+  double v;
+
   void set_face_normal(const ray &r, const vec3 &outward_normal) {
     // Sets the hit record normal vector.
     // NOTE: the parameter `outward_normal` is assumed to have unit length.

@@ -1,4 +1,10 @@
 #pragma once
+#include <future>
+#include <mutex>
+#include <sstream>
+#include <thread>
+#include <unordered_map>
+#include <vector>
 #ifndef CAMERA_H
 #define CAMERA_H
 
@@ -29,17 +35,57 @@ public:
 
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
+    std::unordered_map<int, std::string> image_data =
+        std::unordered_map<int, std::string>();
+    std::vector<std::thread> threads;
+    std::mutex image_mutex;
+
     for (int j = 0; j < image_height; j++) {
       std::clog << "\rScanlines remaining: " << (image_height - j) << ' '
                 << std::flush;
-      for (int i = 0; i < image_width; i++) {
-        color pixel_color(0, 0, 0);
-        for (int sample = 0; sample < samples_per_pixel; sample++) {
-          ray r = get_ray(i, j);
-          pixel_color += ray_color(r, max_depth, world);
+
+      threads.emplace_back([this, &image_data, &image_mutex, &world, j]() {
+        std::ostringstream out;
+        for (int i = 0; i < this->image_width; i++) {
+          color pixel_color(0, 0, 0);
+          for (int sample = 0; sample < this->samples_per_pixel; sample++) {
+            ray r = get_ray(i, j);
+            pixel_color += ray_color(r, this->max_depth, world);
+          }
+          // write_color(std::cout, color(1,1,1));
+          pixel_color *= this->pixel_samples_scale;
+
+          auto r = pixel_color.x();
+          auto g = pixel_color.y();
+          auto b = pixel_color.z();
+
+          // Apply a linear to gamma transform for gamma 2
+          r = linear_to_gamma(r);
+          g = linear_to_gamma(g);
+          b = linear_to_gamma(b);
+
+          // Translate the [0,1] component values to the byte range
+          // [0,255].
+          static const interval intensity(0.000, 0.999);
+          int rbyte = int(256 * intensity.clamp(r));
+          int gbyte = int(256 * intensity.clamp(g));
+          int bbyte = int(256 * intensity.clamp(b));
+
+          // Write out the pixel color components.
+          out << rbyte << ' ' << gbyte << ' ' << bbyte << '\n';
         }
-        write_color(std::cout, pixel_samples_scale * pixel_color);
-      }
+				{
+          std::lock_guard<std::mutex> lock(image_mutex);
+          image_data[j] = std::move(out).str();
+        }
+      });
+    }
+
+    for (auto &t : threads)
+      t.join();
+
+    for (int j = 0; j < image_height; j++) {
+      std::cout << image_data[j];
     }
 
     std::clog << "\rDone.                 \n";

@@ -1,3 +1,4 @@
+#include "image_texture.h"
 #include "rtweekend.h"
 
 #include "camera.h"
@@ -44,8 +45,12 @@ int main() {
   auto material1 = make_shared<dielectric>(1.5);
   world.add(make_shared<sphere>(point3(0, 1, 0), 1.0, material1));
 
-  auto material2 = make_shared<lambertian>(color(0.8, 0.4, 0.8));
+  auto texture = std::make_shared<image_texture>("../textures/steve2.png");
+	auto material2 = make_shared<lambertian_texture>(texture);
   world.add(make_shared<sphere>(point3(0, 5, 0), 1.0, material2));
+  
+	// auto material2 = make_shared<lambertian>(color(0.8, 0.4, 0.8));
+	//  world.add(make_shared<sphere>(point3(0, 5, 0), 1.0, material2));
 
   auto material3 = make_shared<metal>(color(0.137, 0.922, 0.439), 0.2);
   world.add(make_shared<sphere>(point3(0, 3, 0), 1.0, material3));
@@ -58,11 +63,11 @@ int main() {
   cam.max_depth = 50;
 
   cam.vfov = 50;
-  cam.lookfrom = point3(13, 2, 3);
+  cam.lookfrom = point3(3, 2, 10);
   cam.lookat = point3(0, 2.5, 0);
   cam.vup = vec3(0, 1, 0);
 
-  cam.defocus_angle = 0.6;
+  cam.defocus_angle = 1.2;
   cam.focus_dist = 10.0;
   cam.render(world);
 }

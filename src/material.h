@@ -5,6 +5,7 @@
 #include "hittable.h"
 #include "rtweekend.h"
 #include "vec3.h"
+#include "texture.h"
 
 class material {
 public:
@@ -35,6 +36,27 @@ public:
 
 private:
   color albedo;
+};
+
+class lambertian_texture : public material {
+public:
+  lambertian_texture(const color &albedo) : albedo(std::make_shared<solid_color>(albedo)) {}
+  lambertian_texture(std::shared_ptr<texture> tex) : albedo(tex) {}
+
+  bool scatter(const ray &r_in, const hit_record &rec, color &attenuation,
+               ray &scattered) const override {
+    auto scatter_direction = rec.normal + random_unit_vector();
+
+    if (scatter_direction.near_zero())
+      scatter_direction = rec.normal;
+
+    scattered = ray(rec.p, scatter_direction);
+    attenuation = albedo->value(rec.u, rec.v, rec.p);
+    return true;
+  }
+
+private:
+  std::shared_ptr<texture> albedo;
 };
 
 class metal : public material {

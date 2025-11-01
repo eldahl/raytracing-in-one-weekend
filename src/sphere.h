@@ -31,11 +31,15 @@ public:
         return false;
     }
 
+
     rec.t = root;
     rec.p = r.at(rec.t);
     vec3 outward_normal = (rec.p - center) / radius;
     rec.set_face_normal(r, outward_normal);
     rec.mat = mat;
+		
+    // compute u,v from the point on the unit sphere
+    get_sphere_uv((rec.p - center) / radius, rec.u, rec.v);
 
     return true;
   }

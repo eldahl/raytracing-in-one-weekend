@@ -35,10 +35,24 @@ inline double random_double(double min, double max) {
   return min + (max - min) * random_double();
 }
 
+
 // Common Headers
 #include "vec3.h"
 #include "color.h"
 #include "interval.h"
 #include "ray.h"
+
+// Convert point on unit sphere to spherical coordinates (u,v):
+// u in [0,1] across longitude (phi), v in [0,1] across latitude (theta)
+inline void get_sphere_uv(const point3& p, double& u, double& v) {
+    // p is assumed to be a point on the unit sphere centered at origin.
+    // theta: angle from -y to +y (like latitude)
+    // phi: angle around y axis from +x
+    double theta = acos(-p.y());
+    double phi   = atan2(-p.z(), p.x()) + M_PI;
+
+    u = phi / (2*M_PI);
+    v = theta / M_PI;
+}
 
 #endif
