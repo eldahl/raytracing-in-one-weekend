@@ -41,29 +41,42 @@ int main() {
       }
     }
   }
+  
+	auto left1 = make_shared<metal>(color(0.137, 0.922, 0.439), 0.2);
+  world.add(make_shared<sphere>(point3(-(pi/2), 4, -1), 1.0, left1));
+	
+	auto left2 = make_shared<metal>(color(0.8, 0.5, 0.8), 0.2);
+  world.add(make_shared<sphere>(point3(-6, 8, -5), 5.0, left2));
+	
+	auto right1 = make_shared<metal>(color(0.85, 0.188, 0.188), 0.2);
+  world.add(make_shared<sphere>(point3((pi/2), 4, -1), 1.0, right1));
+	
+	auto right2 = make_shared<metal>(color(0.827, 0.686, 0.215), 0.2);
+  world.add(make_shared<sphere>(point3(6, 8, -5), 5.0, right2));
+  
+	auto texture = std::make_shared<image_texture>("../textures/test.png");
+	auto material1 = make_shared<lambertian_texture>(texture);
+  world.add(make_shared<sphere>(point3(0, 5, 0), 1.0, material1));
+  
+	auto material2 = make_shared<metal>(color(0.137, 0.922, 0.439), 0.2);
+  world.add(make_shared<sphere>(point3(0, 3, 0), 1.0, material2));
 
-  auto material1 = make_shared<dielectric>(1.5);
-  world.add(make_shared<sphere>(point3(0, 1, 0), 1.0, material1));
-
-  auto texture = std::make_shared<image_texture>("../textures/steve2.png");
-	auto material2 = make_shared<lambertian_texture>(texture);
-  world.add(make_shared<sphere>(point3(0, 5, 0), 1.0, material2));
+  auto material3 = make_shared<dielectric>(1.5);
+  world.add(make_shared<sphere>(point3(0, 1, 0), 1.0, material3));
   
 	// auto material2 = make_shared<lambertian>(color(0.8, 0.4, 0.8));
 	//  world.add(make_shared<sphere>(point3(0, 5, 0), 1.0, material2));
 
-  auto material3 = make_shared<metal>(color(0.137, 0.922, 0.439), 0.2);
-  world.add(make_shared<sphere>(point3(0, 3, 0), 1.0, material3));
 
   camera cam;
 
   cam.aspect_ratio = 16.0 / 9.0;
   cam.image_width = 1200;
-  cam.samples_per_pixel = 10;
+  cam.samples_per_pixel = 350;
   cam.max_depth = 50;
 
   cam.vfov = 50;
-  cam.lookfrom = point3(3, 2, 10);
+  cam.lookfrom = point3(0, 2, 10);
   cam.lookat = point3(0, 2.5, 0);
   cam.vup = vec3(0, 1, 0);
 
