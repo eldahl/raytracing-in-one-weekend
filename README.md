@@ -6,6 +6,7 @@ On the 31st of October 2025 or on Halloween, with nothing to do, my sights were 
 
 ## Deviations from the book:
 - Lambertian-texture material has been added. Requires UV to be set by the geometry class.
+- Multi-threaded rendering on the CPU has been added.
 
 # Generated images:
 Below are the generated images that follows the book.    
