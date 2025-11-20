@@ -60,10 +60,10 @@ HOST_DEVICE inline void get_sphere_uv(const point3& p, double& u, double& v) {
     // theta: angle from -y to +y (like latitude)
     // phi: angle around y axis from +x
     double theta = acos(-p.y());
-    double phi   = atan2(-p.z(), p.x()) + M_PI;
+    double phi   = atan2(-p.z(), p.x()) + pi;
 
-    u = phi / (2*M_PI);
-    v = theta / M_PI;
+    u = phi / (2*pi);
+    v = theta / pi;
 }
 
 #endif

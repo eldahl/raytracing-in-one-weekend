@@ -1,13 +1,17 @@
-<p align="center" ><img src="./imgs/final-final.png" width="100%"/></p>
+<p align="center" ><img src="./imgs/final-3.png" width="100%"/></p>
 
 # Ray Tracing in One Weekend | The Book
 On the 31st of October 2025 or on Halloween, with nothing to do, my sights were set on going through the "Ray Tracing in One Weekend" book:     
 [_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
 
+## Deviations from the book:
+- Lambertian-texture material has been added. Requires UV to be set by the geometry class.
+- Multi-threaded rendering on the CPU has been added.
+
+# Generated images:
 Below are the generated images that follows the book.    
 The first image is from halfway through.
 
-# Generated images:
 <p align="center" ><img src="./imgs/1.png" width="100%"/></p>
 <p align="center">Lambertian diffuse material.</p>
 <p align="center"><img src="./imgs/2.png" width="100%"/></p>
@@ -33,8 +37,7 @@ The first image is from halfway through.
 <p align="center"><img src="./imgs/12.png"width="100%"/></p>
 <p align="center">Simulated depth of field through a lens.</p>
 <p align="center"><img src="./imgs/final.png" width="100%"/></p>
-<p align="center":w
->Rerendered cover image of the book.</p>
+<p align="center">Rerendered cover image of the book.</p>
 
 # Credits | The book
 [_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
