@@ -21,6 +21,13 @@ I have successfully implemented GPU rendering using CUDA. The new renderer runs 
     - `free_world`: Cleans up GPU memory.
 - Created `src/cuda_utils.h` for CUDA error checking and helper macros.
 
+## Scene Synchronization
+
+I have updated `src/main.cu` to match the scene described in `src/main.cpp`.
+- **Texture Support**: Modified `image_texture.h` to be CUDA-compatible and updated `main.cu` to load textures on the host and transfer them to the GPU.
+- **Scene Objects**: Added the specific spheres (metal, dielectric, textured) from `main.cpp` to the CUDA `create_world` kernel.
+- **Camera Settings**: Updated camera parameters (FOV, lookfrom/at, defocus) to match `main.cpp`.
+
 ## Verification
 
 I ran the new `rtiow_cuda` executable and it successfully generated an image.

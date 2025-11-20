@@ -7,6 +7,24 @@ On the 31st of October 2025 or on Halloween, with nothing to do, my sights were 
 ## Deviations from the book:
 - Lambertian-texture material has been added. Requires UV to be set by the geometry class.
 - Multi-threaded rendering on the CPU has been added.
+- GPU rendering using CUDA has been added by Gemini 3 Pro (High):
+
+
+## GPU rendering performance:
+```
+(Left)
+Rendering a 1200x675 image with 10 samples per pixel in 8x8 blocks.
+took 19.3823 seconds.
+
+(Right)
+Rendering a 1200x675 image with 100 samples per pixel in 8x8 blocks.
+took 445.197 seconds.
+```
+<p align="center" >
+    <img src="./imgs/image_cuda.png"/>
+    <img src="./imgs/image_cuda_scene.png"/>
+</p>
+
 
 # Generated images:
 Below are the generated images that follows the book.    
