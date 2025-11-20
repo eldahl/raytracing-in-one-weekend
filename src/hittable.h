@@ -14,14 +14,14 @@ class hit_record {
 public:
   point3 p;
   vec3 normal;
-  std::shared_ptr<material> mat;
+  SharedPtr<material> mat;
   double t;
   bool front_face;
 
   double u;
   double v;
 
-  void set_face_normal(const ray &r, const vec3 &outward_normal) {
+  HOST_DEVICE void set_face_normal(const ray &r, const vec3 &outward_normal) {
     // Sets the hit record normal vector.
     // NOTE: the parameter `outward_normal` is assumed to have unit length.
 
@@ -32,9 +32,9 @@ public:
 
 class hittable {
 public:
-  virtual ~hittable() = default;
+  HOST_DEVICE virtual ~hittable() = default;
 
-  virtual bool hit(const ray &r, interval ray_t, hit_record &rec) const = 0;
+  HOST_DEVICE virtual bool hit(const ray &r, interval ray_t, hit_record &rec) const = 0;
 };
 
 #endif

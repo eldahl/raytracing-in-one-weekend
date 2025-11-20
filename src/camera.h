@@ -15,6 +15,8 @@
 class camera {
 
 public:
+  HOST_DEVICE camera() {}
+
   /* Public Camera Parameters Here */
   double aspect_ratio = 1.0;  // Ratio of image width over height
   int image_width = 100;      // Rendered image width in pixel count
@@ -91,7 +93,7 @@ public:
     std::clog << "\rDone.                 \n";
   }
 
-private:
+public:
   /* Private Camera Parameters Here */
   int image_height;           // Rendered image height
   double pixel_samples_scale; // Color scale factor for a sum of pixel samples
@@ -103,7 +105,7 @@ private:
   vec3 defocus_disk_u;        // Defocus disk horizontal radius
   vec3 defocus_disk_v;        // Defocus disk vertical radius
 
-  void initialize() {
+  HOST_DEVICE void initialize() {
     image_height = int(image_width / aspect_ratio);
     image_height = (image_height < 1) ? 1 : image_height;
 
@@ -146,33 +148,33 @@ private:
     defocus_disk_v = v * defocus_radius;
   }
 
-  ray get_ray(int i, int j) const {
+  HOST_DEVICE ray get_ray(int i, int j, RAND_STATE) const {
     // Construct a camera ray originating from the defocus disk and directed at
     // a randomly sampled point around the pixel location i, j.
 
-    auto offset = sample_square();
+    auto offset = sample_square(local_rand_state);
     auto pixel_sample = pixel00_loc + ((i + offset.x()) * pixel_delta_u) +
                         ((j + offset.y()) * pixel_delta_v);
 
-    auto ray_origin = (defocus_angle <= 0) ? center : defocus_disk_sample();
+    auto ray_origin = (defocus_angle <= 0) ? center : defocus_disk_sample(local_rand_state);
     auto ray_direction = pixel_sample - ray_origin;
 
     return ray(ray_origin, ray_direction);
   }
 
-  vec3 sample_square() const {
+  HOST_DEVICE vec3 sample_square(RAND_STATE) const {
     // Returns the vector to a random point in the [-.5,-.5]-[+.5,+.5] unit
     // square.
-    return vec3(random_double() - 0.5, random_double() - 0.5, 0);
+    return vec3(RANDOM_DOUBLE - 0.5, RANDOM_DOUBLE - 0.5, 0);
   }
 
-  point3 defocus_disk_sample() const {
+  HOST_DEVICE point3 defocus_disk_sample(RAND_STATE) const {
     // Returns a random point in the camera defocus disk.
-    auto p = random_in_unit_disk();
+    auto p = random_in_unit_disk(local_rand_state);
     return center + (p[0] * defocus_disk_u) + (p[1] * defocus_disk_v);
   }
 
-  color ray_color(const ray &r, int depth, const hittable &world) const {
+  HOST_DEVICE color ray_color(const ray &r, int depth, const hittable &world, RAND_STATE) const {
     // If we've exceeded the ray bounce limit, no more light is gathered.
     if (depth <= 0)
       return color(0, 0, 0);
@@ -182,8 +184,8 @@ private:
     if (world.hit(r, interval(0.001, infinity), rec)) {
       ray scattered;
       color attenuation;
-      if (rec.mat->scatter(r, rec, attenuation, scattered))
-        return attenuation * ray_color(scattered, depth - 1, world);
+      if (rec.mat->scatter(r, rec, attenuation, scattered, local_rand_state))
+        return attenuation * ray_color(scattered, depth - 1, world, local_rand_state);
       return color(0, 0, 0);
     }
 
